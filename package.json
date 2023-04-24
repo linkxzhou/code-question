@@ -1,0 +1,15 @@
+{
+  "name": "root",
+  "private": true,
+  "workspaces": [
+    "packages/code-question",
+    "packages/code-question-indexer"
+  ],
+  "devDependencies": {
+    "lerna": "^6.5.1",
+    "syncpack": "^9.8.4"
+  },
+  "engines": {
+    "node": ">= 16.0.0 < 17.0.0"
+  }
+}
