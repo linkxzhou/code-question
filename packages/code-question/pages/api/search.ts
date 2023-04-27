@@ -25,7 +25,7 @@ export default async function handler(
       );
 
       console.log("query: ", query, ", NUM_RESULTS: ", NUM_RESULTS);
-      const llm = new OpenAIChat({ temperature: 0.5, cache: true, verbose: true }); // 填写自己的basePath
+      const llm = new OpenAIChat({ temperature: 0.5, cache: true, verbose: true }); // { basePath: "https://openai.vasdgame.com/v1" }
       const queryResult = await vectorStore.similaritySearchWithScore(
         query,
         NUM_RESULTS
