@@ -19,12 +19,15 @@ async function* walk(dir: string): AsyncIterable<string> {
 }
 
 async function indexRepo(input: string, output: string, dryrun: boolean) {
-  const MAX_DOC_LENGTH = 1600;
+  const MAX_DOC_LENGTH = 2400;
   const allDocuments = [];
 
+  console.log("input: ", input);
   for await (const p of walk(input)) {
     const chunks = await parseFile(p);
+    console.log("chunks: ", chunks, p);
     for (const { language, code, range } of chunks) {
+      console.log("language, code, range: ", language, code, range);
       const document = new Document({
         pageContent: code.slice(0, MAX_DOC_LENGTH),
         metadata: {
@@ -63,12 +66,12 @@ async function indexRepo(input: string, output: string, dryrun: boolean) {
 
   const vectorStore = await HNSWLib.fromDocuments(
     allDocuments,
-    new OpenAIEmbeddings()
+    new OpenAIEmbeddings({ verbose: true })
   );
 
   // Monkey patch console.log
   const log = console.log;
-  console.log = () => {};
+  console.log = () => { };
 
   await vectorStore.save(output);
 }
@@ -114,9 +117,12 @@ export async function buildIndex({ input, dryrun }: IndexParams) {
   const indexDir = path.join(baseDir, "index");
 
   // 判断是否为git地址，如果是git地址则执查找git项目
-  let revision = metadata.name
-  if (metadata.name == ".") {
-    console.log("repositoryDir: ", repositoryDir)
+  console.log("input metadata: ", metadata);
+  let revision;
+  let isLocal = metadata.local ? metadata.local : false;
+  if (isLocal) {
+    revision = metadata.name
+    console.log("revision: ", revision, ", repositoryDir: ", repositoryDir)
   } else {
     revision = await gitCloneRepository(
       metadata.name,

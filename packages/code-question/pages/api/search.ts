@@ -19,30 +19,39 @@ export default async function handler(
   const repository = getRepositoryManager((res.socket! as any).server);
   switch (req.method) {
     case "POST": {
-      const log = console.log;
-      console.log = () => {};
       const vectorStore = await HNSWLib.load(
         path.join(repository.getProject(project).projectDir, "index"),
         new OpenAIEmbeddings()
       );
 
-      const llm = new OpenAIChat({ temperature: 0.2, cache: true });
+      console.log("query: ", query, ", NUM_RESULTS: ", NUM_RESULTS);
+      const llm = new OpenAIChat({ temperature: 0.5, cache: true, verbose: true }); // 填写自己的basePath
       const queryResult = await vectorStore.similaritySearchWithScore(
         query,
         NUM_RESULTS
       );
 
+      console.log("queryResult: ", queryResult);
       const formattedResults = queryResult.map(async (result: any[]) => {
         const code = result[0].pageContent;
         const language = result[0].metadata.language;
         const prompt = await CodeTemplate.format({ language, query, code });
+        let summary = "NOT HELPFUL"
+        try {
+          summary = await llm.call(prompt);
+        } catch (e) {
+          console.log("llm.call: ", e);
+        }
+        if (summary.includes("NOT HELPFUL")) {
+          summary = "最终答案: AI可能未能理解问题，系统给出默认答案。";
+        }
         return {
           pageContent: code,
           metadata: {
             language: language,
             source: result[0].metadata.source,
             score: 1.0 - result[1],
-            summary: await llm.call(prompt),
+            summary: summary,
             lineNumber: result[0].metadata.range.start.row + 1,
           },
         };
@@ -51,6 +60,7 @@ export default async function handler(
       const results = (await Promise.all(formattedResults)).filter(
         ({ metadata }) => !metadata.summary.includes("NOT HELPFUL")
       );
+      console.log("results: ", results);
       return res.status(200).json(results);
     }
     default: {
@@ -61,13 +71,13 @@ export default async function handler(
 }
 
 const CodeTemplate = new PromptTemplate({
-  template: `Given the following {language} code and a question, create a concise answer in markdown.
-If the snippet is not really helpful, just say "NOT HELPFUL".
+  template: `如果给出以下{language}代码和一个问题，请用Markdown创建一个简洁的答案。
+如果代码片段不是很有用，请回答"NOT HELPFUL"。
 =========
 {code}
 =========
 
-QUESTION: {query}
-FINAL ANSWER:`,
+问题: {query}
+最终答案:`,
   inputVariables: ["language", "query", "code"],
 });

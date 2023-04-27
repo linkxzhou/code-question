@@ -36,4 +36,4 @@ function functionWithComment() {
 // 
 functionWithComment();
 
-export {};
+export { };

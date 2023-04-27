@@ -3,7 +3,15 @@
     "experimental-specifier-resolution=node",
     "loader=ts-node/esm"
   ],
-  "extensions": ["ts", "tsx"],
-  "spec": ["tests/**/*.spec.*"],
-  "watch-files": ["src", "tests"]
+  "extensions": [
+    "ts",
+    "tsx"
+  ],
+  "spec": [
+    "tests/**/*.spec.*"
+  ],
+  "watch-files": [
+    "src",
+    "tests"
+  ]
 }

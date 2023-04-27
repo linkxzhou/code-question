@@ -5,7 +5,12 @@
     "declaration": true,
     "declarationDir": "dist/types",
     "outDir": "dist/lib",
-    "typeRoots": ["../../node_modules/@types", "./typings"]
+    "typeRoots": [
+      "../../node_modules/@types",
+      "./typings"
+    ]
   },
-  "exclude": ["tests"]
+  "exclude": [
+    "tests"
+  ]
 }

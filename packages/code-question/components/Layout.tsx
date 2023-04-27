@@ -69,7 +69,7 @@ export default function Layout(props: LayoutProps) {
           style={{ height: "100vh", position: "static" }}
         >
           <Link
-            href="https://github.com/TabbyML/quick-question"
+            href="https://github.com/linkxzhou/code-question"
             target="_blank"
           >
             <Toolbar
@@ -103,7 +103,7 @@ export default function Layout(props: LayoutProps) {
                 </ListItemIcon>
                 <ListItemText style={{ marginTop: "-6px" }}>
                   <Text type="text" variant="subtitle2">
-                    Projects
+                    项目
                   </Text>
                 </ListItemText>
               </ListItemButton>

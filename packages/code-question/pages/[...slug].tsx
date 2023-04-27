@@ -74,7 +74,7 @@ export default function Home({ project }: HomeProps) {
     <HomeContainer>
       <div style={{ marginTop: "20px", textAlign: "center" }}>
         <p style={{ textAlign: "left", marginBottom: "10px" }}>
-          Selected repo:{" "}
+          构建仓库:{" "}
           <a href={`https://github.com/${metadata.name}`}>{metadata.name}</a>
         </p>
         {props.children}
@@ -98,7 +98,7 @@ export default function Home({ project }: HomeProps) {
     return (
       <InfoContainer>
         <Alert severity="error" sx={{ mb: 4 }}>
-          Indexing job failed, please check server logging for information
+          索引构建失败，请检查日志获取更多信息
         </Alert>
       </InfoContainer>
     );
@@ -108,12 +108,10 @@ export default function Home({ project }: HomeProps) {
     return (
       <InfoContainer>
         <Alert severity="warning" sx={{ mb: 4 }}>
-          Repository needs to be indexed before it is able to search it.
-          Indexing usually takes less than 5 minutes. Feel free to grab some
-          coffee!
+          需要对存储库进行索引才能搜索它，索引构建需要几分钟，请稍等~~
         </Alert>
         <LoadingButton loading variant="outlined">
-          Indexing
+          索引
         </LoadingButton>
       </InfoContainer>
     );
@@ -135,7 +133,7 @@ export default function Home({ project }: HomeProps) {
         <Grid item xs={12} sx={{ pl: 4, pr: 4, pt: 4, pb: 4 }}>
           <Grid item xs={12}>
             <Text type="header" variant="subtitle1">
-              Ask a question about {project.metadata.name} ...
+              可以对"{project.metadata.name}"仓库代码提问...
             </Text>
           </Grid>
           <Grid item xs={12} sx={{ mt: 4 }}>
@@ -181,19 +179,19 @@ export default function Home({ project }: HomeProps) {
             variant="outlined"
             onClick={getSearchResults}
           >
-            Search
+            搜索
           </LoadingButton>
         </Grid>
       </Grid>
       {status === 'loaded' && <Grid container sx={{ mt: 6 }}>
         <Grid item xs={8} sx={{ mb: 4 }}>
           <Text type="header" variant="h4">
-            Top matches
+            匹配列表
           </Text>
         </Grid>
         {matches.length == 0 && (
           <Grid item xs={12}>
-            <div style={{ textAlign: "center" }}> (No matches)</div>
+            <div style={{ textAlign: "center" }}> (没有匹配代码)</div>
           </Grid>
         )}
         {matches.map((match, it) => (
@@ -222,10 +220,10 @@ export default function Home({ project }: HomeProps) {
               </Grid>
               <Grid item xs={6} sx={{ textAlign: "right" }}>
                 <Chip
-                  label="View on Github"
+                  label="跳转查看源码"
                   color="default"
                   component="a"
-                  href={`https://github.com/${metadata.name}/tree/${revision}/${match.metadata.source}#L${match.metadata.lineNumber}`}
+                  href={`/${metadata.name}/tree/${revision}/${match.metadata.source}#L${match.metadata.lineNumber}`}
                   size="small"
                   sx={{ fontSize: "0.85rem", ml: 1, p: 1 }}
                   variant="outlined"

@@ -1,54 +1,44 @@
-## ⁉️ QuickQuestion
+## ⁉️ Code Question
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-![Docker build status](https://img.shields.io/github/actions/workflow/status/TabbyML/quick-question/docker.yml?label=docker%20image%20build)
 
-## 🤔 What is this?
+## 介绍
 
-An incubating AI-powered Q&A for your codebase.
+基于AI的代码库问答系统。
 
-[Live Demo](https://quick-question.fly.dev)
-
-![Example Quick Question](example-quick-question.png)
-
-## 🚀 Deployment
-Make sure [git-lfs](https://git-lfs.com/) is installed.
-
-1. Clone the repository.
+## 部署
+1. 拉取代码
     ```bash
-    git clone https://github.com/TabbyML/quick-question.git
+    git clone https://github.com/linkxzhou/code-question.git
     ```
 
-2. Save your OPENAI_API_KEY to file as secret.
+2. 保存您的OPENAI_API_KEY到指定的文件
     ```bash
     echo YOUR_OPENAI_API_KEY > openai_api_key.txt
     ```
 
-3. **Optional** Run Quick Question on your github project.
-   1. Create new directory for you project under `/data`, e.g `/data/quick-question`.
-   2. Add a new `metadata.json` file in your project directory.
-   Here is a templete of file content, replace `{GITHUB_PROJECT}` with your own project name, e.g `TabbyML/quick-question`.  
-        ```json
-        {
-            "name": "{GITHUB_PROJECT}",
-            "exampleQueries": ["How to ...?"]
-        }
-        ```
+3. 配置文件
+```json
+{
+    "name": "{GITHUB_PROJECT}", // 如果是本地仓库，可以命名，如果是github仓库，可以填写git地址
+    "exampleQueries": ["问题XXX?"], // 一些样例问题
+    "local": true // 本地仓库，将代码放到repository文件夹中
+}
+```
 
-        > See [./data/diffusers/metadata.json](./data/diffusers/metadata.json) for a complete example.
+> 详细可以看[./data/diffusers/metadata.json](./data/diffusers/metadata.json)的例子。
 
-4. Start container.
+4. 启动容器.
     ```
     docker-compose up
     ```
 
-## 🛠️ Development
-1. Make sure [git-lfs](https://git-lfs.com/) is installed.
-2. Clone the repository, runs `yarn` to install dependencies.
-3. Run `yarn lerna run build`.
-4. Switch workdir to `./packages/quick-question`.
-3. Copy `.env.sample` to `.env.local`, and set your `OPENAI_API_KEY`.
-4. Run `yarn dev` to start local development 
+## 构建
+1. 拉取仓库，使用`yarn`安装依赖
+2. 运行`yarn lerna run build`
+3. 切换目录`./packages/code-question`
+4. 拷贝`.env.sample`到`.env.local`, 然后设置`OPENAI_API_KEY`
+5. 运行`yarn dev`后可以再网页端访问
 
-## ❤️ Acknowledgement
+## 感谢
 
-Many thanks to WizAI for contributing with [code-search](https://github.com/wizi-ai/code-search), a project that QuickQuestion branched from.
+非常感谢 [quick-question](https://github.com/TabbyML/quick-question) 做出的贡献，CodeQuestion 从这个项目分支出来的。

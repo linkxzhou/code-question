@@ -39,7 +39,14 @@ const LanguageInfos: Array<LanguageInfo> = [
   },
   {
     languageName: "javascript",
-    parser: new TsxParser({ languageName: "javascript" }),
+    parser: new TsxParser({
+      languageName: "javascript", patterns: [
+        ["comment", "function_declaration"],
+        ["function_declaration"],
+        ["comment", "class_declaration"],
+        ["class_declaration"],
+      ]
+    }),
     extensions: [".js", ".jsm", ".cjs", ".mjs"],
   },
   {
@@ -77,6 +84,5 @@ export async function parseFile(file: string): Promise<Chunk[]> {
   }
 
   const code = fs.readFileSync(file, "utf-8");
-
   return await langInfo.parser.parse(code);
 }

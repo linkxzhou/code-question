@@ -14,6 +14,7 @@ import { ProjectInfo, getRepositoryManager } from "services/RepositoryManager";
 interface HomeProps {
   projects: ProjectInfo[];
 }
+
 export default function Home({ projects }: HomeProps) {
   return (
     <main>

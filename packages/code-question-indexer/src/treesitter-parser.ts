@@ -116,3 +116,4 @@ export class JavaParser extends TreeSitterParser {
 export class KotlinParser extends TreeSitterParser {
   language = TreeSitterKotlin;
 }
+

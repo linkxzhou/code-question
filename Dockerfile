@@ -7,8 +7,8 @@ COPY yarn.lock ./
 COPY lerna.json ./
 
 
-COPY packages/quick-question/package.json ./packages/quick-question/
-COPY packages/quick-question-indexer/package.json ./packages/quick-question-indexer/
+COPY packages/code-question/package.json ./packages/code-question/
+COPY packages/code-question-indexer/package.json ./packages/code-question-indexer/
 
 RUN yarn
 

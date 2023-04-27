@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "cd ../code-question-indexer && yarn build && cd ../code-question && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -29,7 +29,7 @@
     "langchain": "0.0.33",
     "next": "13.1.6",
     "openai": "^3.1.0",
-    "quick-question-indexer": "*",
+    "code-question-indexer": "*",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.7.1",

@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 
 import { globSync } from "glob";
-import { buildIndex, IndexMetadata } from "quick-question-indexer";
+import { buildIndex, IndexMetadata } from "code-question-indexer";
 
 export interface Metadata {
   name: string;
@@ -75,6 +75,7 @@ class RepositoryManager {
   private readonly projects: Project[];
 
   constructor() {
+    console.log("process.env.REPO_DIR: ", process.env.REPO_DIR)
     this.projects = globSync(
       path.join(process.env.REPO_DIR!, "*", "metadata.json")
     ).map((x) => new Project(x));
