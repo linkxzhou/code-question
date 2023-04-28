@@ -9,7 +9,7 @@ import { PromptTemplate } from "langchain/prompts";
 
 import { getRepositoryManager } from "services/RepositoryManager";
 
-const NUM_RESULTS = 3;
+const NUM_RESULTS = 6;
 
 export default async function handler(
   req: NextApiRequest,
@@ -24,14 +24,24 @@ export default async function handler(
         new OpenAIEmbeddings()
       );
 
-      console.log("query: ", query, ", NUM_RESULTS: ", NUM_RESULTS);
-      const llm = new OpenAIChat({ temperature: 0.5, cache: true, verbose: true }); // { basePath: "https://openai.vasdgame.com/v1" }
-      const queryResult = await vectorStore.similaritySearchWithScore(
-        query,
-        NUM_RESULTS
-      );
+      let resultTryTimes = NUM_RESULTS;
+      let queryResult: any = [];
+      while (resultTryTimes > 0) {
+        console.log("query: ", query, ", NUM_RESULTS: ", resultTryTimes);
+        try {
+          queryResult = await vectorStore.similaritySearchWithScore(
+            query,
+            NUM_RESULTS
+          );
+          break;
+        } catch (err) {
+          console.log("err: ", err);
+          resultTryTimes = Math.floor(resultTryTimes / 2);
+        }
+      }
 
       console.log("queryResult: ", queryResult);
+      let llm = new OpenAIChat({ temperature: 0.5, cache: true }); // {verbose: true} { basePath: "https://openai.vasdgame.com/v1" }
       const formattedResults = queryResult.map(async (result: any[]) => {
         const code = result[0].pageContent;
         const language = result[0].metadata.language;
@@ -43,7 +53,7 @@ export default async function handler(
           console.log("llm.call: ", e);
         }
         if (summary.includes("NOT HELPFUL")) {
-          summary = "最终答案: AI可能未能理解问题，系统给出默认答案。";
+          summary = "【🤔抱歉】AI可能找到正确答案，因此系统给出默认答案。";
         }
         return {
           pageContent: code,
@@ -71,8 +81,10 @@ export default async function handler(
 }
 
 const CodeTemplate = new PromptTemplate({
-  template: `如果给出以下{language}代码和一个问题，请用Markdown创建一个简洁的答案。
-如果代码片段不是很有用，请回答"NOT HELPFUL"。
+  template: `如果给出以下{language}代码和一个问题，请用Markdown回答我。
+如果能给出例子，请按照代码写一个样例；
+如果代码中有用户名或者密码等敏感信息，请用***替换；
+如果代码片段不是很有用，请回答"NOT HELPFUL"；
 =========
 {code}
 =========

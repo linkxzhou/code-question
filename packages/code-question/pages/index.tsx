@@ -32,8 +32,8 @@ interface RowProps {
 }
 
 function Row({ project }: RowProps) {
-  const label = project.indexingStatus === "success" ? "indexed" : "pending";
-  const color = label === "indexed" ? "primary" : "secondary";
+  const label = project.indexingStatus === "success" ? "已构建" : "待构建";
+  const color = label === "已构建" ? "primary" : "secondary";
 
   return (
     <Grid

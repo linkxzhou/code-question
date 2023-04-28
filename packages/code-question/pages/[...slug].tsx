@@ -218,7 +218,7 @@ export default function Home({ project }: HomeProps) {
                   variant="outlined"
                 />
               </Grid>
-              <Grid item xs={6} sx={{ textAlign: "right" }}>
+              {/* <Grid item xs={6} sx={{ textAlign: "right" }}>
                 <Chip
                   label="跳转查看源码"
                   color="default"
@@ -232,7 +232,7 @@ export default function Home({ project }: HomeProps) {
                   onDelete={() => { }}
                   deleteIcon={<LaunchIcon />}
                 />
-              </Grid>
+              </Grid> */}
             </Grid>
             <Grid item xs={12} key={it} sx={{ mb: 8 }}>
               <Grid item xs={12}>

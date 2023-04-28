@@ -19,7 +19,7 @@ async function* walk(dir: string): AsyncIterable<string> {
 }
 
 async function indexRepo(input: string, output: string, dryrun: boolean) {
-  const MAX_DOC_LENGTH = 2400;
+  const MAX_DOC_LENGTH = 2000;
   const allDocuments = [];
 
   console.log("input: ", input);

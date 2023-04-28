@@ -83,6 +83,8 @@ export async function parseFile(file: string): Promise<Chunk[]> {
     return [];
   }
 
-  const code = fs.readFileSync(file, "utf-8");
+  let code = fs.readFileSync(file, "utf-8");
+  console.log("code: ", code);
+  code = code.replace("export ", "");
   return await langInfo.parser.parse(code);
 }
